@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Virtual Try-On — Enlightened LED</title>
+<style>
+:root{
+  /* Enlightened LED brand — ink #190933 · indigo #5762D5 · teal #03AA9C · lime #ADE25D */
+  --ink:#190933; --indigo:#5762D5; --teal:#03AA9C; --lime:#ADE25D;
+  --bg:#0b0518; --panel:#150c28; --panel2:#1c1234; --line:#2e2050;
+  --txt:#ece8f6; --dim:#9a90b8; --dim2:#6b5f8c;
+  --acc:#12beb0; --acc2:#7f89f0; --warn:#f2b23e; --good:#ADE25D; --bad:#f2706e;
+  --r:10px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;min-height:100vh}
+a{color:var(--acc)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 20px 60px}
+
+/* ---------- header ---------- */
+header{position:sticky;top:0;z-index:50;background:rgba(11,5,24,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.hd{max-width:1280px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img.mk{height:34px;width:auto;display:block}
+.brand .tag{display:block;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim2);margin-top:5px}
+.brand .title{font-size:15px;font-weight:600;letter-spacing:.2px}
+.hstats{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
+.hstat{text-align:right}
+.hstat .k{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--dim2)}
+.hstat .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
+.hstat .v.acc{color:var(--acc)}
+.hstat .v.good{color:var(--good)}
+
+/* ---------- hero / intro ---------- */
+.hero{padding:34px 0 4px}
+.hero h1{margin:0 0 6px;font-size:22px;font-weight:600;letter-spacing:.2px}
+.hero p{margin:0;color:var(--dim);max-width:640px}
+
+/* ---------- cards / grid ---------- */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:2fr 1fr}
+@media(max-width:900px){.g2{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.card h3{margin:0 0 4px;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;color:var(--acc)}
+.card .sub{color:var(--dim2);font-size:12px;margin:0 0 14px}
+.sechd{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px}
+.sechd:first-child{margin-top:0}
+.sechd h2{margin:0;font-size:15px;font-weight:600;letter-spacing:.2px}
+.sechd span{color:var(--dim2);font-size:12px}
+
+/* ---------- VTO stage ---------- */
+/* Let the SDK's iframe size itself naturally; the box just wraps snugly
+   around whatever size it renders at, instead of forcing it to fill a box. */
+.stage{position:relative;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);display:inline-flex;align-items:center;justify-content:center;padding:0;max-width:100%;overflow:hidden;margin:0 auto}
+#YMK-module{display:block;line-height:0}
+#YMK-module iframe{display:block !important;border:0 !important;max-width:100%;border-radius:var(--r)}
+.stage-placeholder{min-width:640px;min-height:480px;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px;color:var(--dim)}
+.stage-wrap{display:flex;justify-content:center}
+
+/* ---------- SKU picker ---------- */
+.skus{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:700px){.skus{grid-template-columns:repeat(2,1fr)}}
+.sku{appearance:none;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;color:var(--txt);font:inherit;transition:.15s}
+.sku:hover:not(:disabled){border-color:var(--acc2)}
+.sku:disabled{opacity:.45;cursor:not-allowed}
+.sku.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc),0 0 16px rgba(18,190,176,.25)}
+.sku .swatch{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.15)}
+.sku .name{font-size:12.5px;font-weight:600}
+.sku .cat{font-size:10.5px;letter-spacing:.5px;text-transform:uppercase;color:var(--dim2)}
+.stage-placeholder .ico{width:52px;height:52px;border-radius:50%;background:rgba(18,190,176,.12);display:flex;align-items:center;justify-content:center;color:var(--acc)}
+.stage-placeholder .ico svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.btn{appearance:none;display:inline-flex;align-items:center;gap:8px;background:var(--acc);color:#0b0518;border:1px solid var(--acc);font:inherit;font-size:13px;font-weight:600;letter-spacing:.2px;padding:11px 20px;border-radius:8px;cursor:pointer;transition:.15s;white-space:nowrap}
+.btn:hover{filter:brightness(1.12);box-shadow:0 0 18px rgba(18,190,176,.28)}
+.btn.ghost{background:transparent;color:var(--txt);border-color:var(--line)}
+.btn.ghost:hover{border-color:var(--acc);color:var(--acc);box-shadow:none}
+.btn[disabled]{opacity:.5;cursor:not-allowed;filter:none;box-shadow:none}
+
+/* ---------- status / consent ---------- */
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--dim2)}
+.dot.ok{background:var(--good);box-shadow:0 0 8px rgba(173,226,93,.6)}
+.dot.err{background:var(--bad)}
+.dot.pending{background:var(--warn)}
+
+.ro{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px dashed var(--line)}
+.ro:last-child{border-bottom:none}
+.ro .k{color:var(--dim);font-size:13px}
+.ro .v{font-variant-numeric:tabular-nums;font-weight:500;text-align:right;font-size:13px}
+
+footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:center;color:var(--dim2);font-size:11.5px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd">
+    <div class="brand">
+      <img class="mk" src="https://raw.githubusercontent.com/Vondraak/ELEDCalc/main/Enlightened%20LED_Logo_RGB.png" alt="Enlightened LED">
+      <div>
+        <div class="title">Virtual Try-On</div>
+        <span class="tag">Powered by Perfect Corp · YouCam for Web</span>
+      </div>
+    </div>
+    <div class="hstats">
+      <div class="hstat"><span class="k">Module</span><div class="v" id="hstat-module">YMK</div></div>
+      <div class="hstat"><span class="k">Status</span><div class="v acc" id="hstat-status">Loading…</div></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>Try it on — live</h1>
+    <p>Launch the virtual try-on experience below. Use your camera or upload a photo to preview products in real time.</p>
+  </div>
+
+  <div class="sechd"><h2>Live preview</h2><span>AR virtual try-on module</span></div>
+
+  <div class="grid g2">
+    <div class="card">
+      <div class="stage-wrap">
+      <div class="stage" id="stage">
+        <div id="YMK-module"></div>
+        <div class="stage-placeholder" id="stagePlaceholder">
+          <div class="ico">
+            <svg viewBox="0 0 24 24"><path d="M4 7V5a2 2 0 0 1 2-2h2M4 17v2a2 2 0 0 0 2 2h2M20 7V5a2 2 0 0 0-2-2h-2M20 17v2a2 2 0 0 1-2 2h-2"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div id="stageMsg">Preparing virtual try-on module…</div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Controls</h3>
+      <p class="sub">Launch, reset, or close the try-on session</p>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <button class="btn" id="btnOpen" disabled>Launch try-on</button>
+        <button class="btn ghost" id="btnClose" disabled>Close session</button>
+      </div>
+
+      <div class="sechd"><h2 style="font-size:13px">Session</h2></div>
+      <div class="ro"><span class="k">SDK</span><span class="v"><span class="status"><span class="dot" id="dotSdk"></span><span id="txtSdk">Loading</span></span></span></div>
+      <div class="ro"><span class="k">Module</span><span class="v"><span class="status"><span class="dot" id="dotModule"></span><span id="txtModule">Idle</span></span></span></div>
+      <div class="ro"><span class="k">Camera / Photo</span><span class="v" id="txtMode">—</span></div>
+    </div>
+  </div>
+
+  <div class="sechd"><h2>Products</h2><span>Sample SKUs — swap the itemGuid/skuId values for real IDs from Perfect Console</span></div>
+
+  <div class="card">
+    <div class="skus" id="skuGrid">
+      <button class="sku" data-sku="SKU_LIPSTICK_CLASSIC_RED" data-name="Classic Red" disabled>
+        <span class="swatch" style="background:#c0273a"></span>
+        <span class="name">Classic Red</span>
+        <span class="cat">Lipstick</span>
+      </button>
+      <button class="sku" data-sku="SKU_EYESHADOW_ROSE_GOLD" data-name="Rose Gold" disabled>
+        <span class="swatch" style="background:#caa06a"></span>
+        <span class="name">Rose Gold</span>
+        <span class="cat">Eyeshadow</span>
+      </button>
+      <button class="sku" data-sku="SKU_BLUSH_CORAL_GLOW" data-name="Coral Glow" disabled>
+        <span class="swatch" style="background:#f0836a"></span>
+        <span class="name">Coral Glow</span>
+        <span class="cat">Blush</span>
+      </button>
+      <button class="sku" data-sku="SKU_EYELINER_JET_BLACK" data-name="Jet Black" disabled>
+        <span class="swatch" style="background:#141018"></span>
+        <span class="name">Jet Black</span>
+        <span class="cat">Eyeliner</span>
+      </button>
+    </div>
+    <div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+      <button class="btn ghost" id="btnReset" disabled>Reset all effects</button>
+      <span class="status"><span class="dot" id="dotSku"></span><span id="txtSku">No product applied</span></span>
+    </div>
+  </div>
+
+</div>
+
+<footer>Enlightened LED · Virtual Try-On experience embedded via Perfect Corp YouCam for Web SDK</footer>
+
+<!-- ================= Perfect Corp YouCam for Web SDK loader ================= -->
+<script>
+  (function (d,k) {
+    var s = d.createElement('script');
+    s.type = 'text/javascript';
+    s.async = true;
+    s.src = 'https://plugins-media.makeupar.com/c57266/sdk.js?apiKey=' + k;
+    var x = d.getElementsByTagName('script')[0];
+    x.parentNode.insertBefore(s, x);
+  })(document, 'LWUxE8Lk0G6eODndLAUSFQ');
+</script>
+<!-- ============================================================================ -->
+
+<script>
+(function(){
+  var elStatus   = document.getElementById('hstat-status');
+  var dotSdk     = document.getElementById('dotSdk');
+  var txtSdk     = document.getElementById('txtSdk');
+  var dotModule  = document.getElementById('dotModule');
+  var txtModule  = document.getElementById('txtModule');
+  var txtMode    = document.getElementById('txtMode');
+  var stageMsg   = document.getElementById('stageMsg');
+  var placeholder= document.getElementById('stagePlaceholder');
+  var btnOpen    = document.getElementById('btnOpen');
+  var btnClose   = document.getElementById('btnClose');
+  var btnReset   = document.getElementById('btnReset');
+  var skuButtons = Array.prototype.slice.call(document.querySelectorAll('.sku'));
+  var dotSku     = document.getElementById('dotSku');
+  var txtSku     = document.getElementById('txtSku');
+
+  function setSdkState(ok, label){
+    dotSdk.className = 'dot ' + (ok === true ? 'ok' : ok === false ? 'err' : 'pending');
+    txtSdk.textContent = label;
+  }
+  function setModuleState(state, label){
+    dotModule.className = 'dot ' + state;
+    txtModule.textContent = label;
+  }
+
+  // Fallback: if the SDK script fails to load (network/adblock), tell the user.
+  setTimeout(function(){
+    if (typeof window.YMK === 'undefined') {
+      setSdkState(false, 'Failed to load');
+      elStatus.textContent = 'Unavailable';
+      stageMsg.textContent = 'The try-on module could not load. Check your connection or disable ad-blockers, then refresh.';
+    }
+  }, 12000);
+
+  // Warn (loudly) if we're not in a secure context — getUserMedia silently
+  // refuses to prompt for camera access on file:// or plain http:// (non-localhost).
+  var insecure = !window.isSecureContext && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1';
+  if (insecure) {
+    stageMsg.innerHTML = 'Camera access requires this page be served over <b>http://localhost</b> or <b>https</b> — it will not work opened directly as a file. Photo upload will still work.';
+  }
+
+  // Fired by the SDK once it has finished loading.
+  window.ymkAsyncInit = function () {
+    setSdkState(true, 'Loaded');
+    elStatus.textContent = 'Ready';
+
+    YMK.init();
+
+    // The module is ready to open as soon as init() returns — do NOT gate
+    // this on the 'loaded' event, which only fires *after* a session (photo
+    // or live stream) is already on canvas.
+    btnOpen.disabled = false;
+
+    YMK.addEventListener('launcherPageEntered', function () {
+      setModuleState('ok', 'Launcher');
+      placeholder.style.display = 'none';
+    });
+    YMK.addEventListener('opened', function () {
+      setModuleState('ok', 'Active');
+      placeholder.style.display = 'none';
+      btnClose.disabled = false;
+    });
+    YMK.addEventListener('cameraOpened', function () {
+      txtMode.textContent = 'Live camera';
+    });
+    YMK.addEventListener('cameraFailed', function () {
+      txtMode.textContent = 'Camera denied/unavailable';
+      stageMsg.textContent = 'Camera access failed — permission was denied, or this page is not served over http://localhost / https.';
+    });
+    YMK.addEventListener('photoLoaded', function () {
+      txtMode.textContent = 'Photo';
+    });
+    YMK.addEventListener('loaded', function () {
+      setModuleState('ok', 'Loaded');
+      // A face image is now on canvas — applyMakeupBySku only works once
+      // isLoaded() is true, so this is when we unlock the product picker.
+      skuButtons.forEach(function(b){ b.disabled = false; });
+      btnReset.disabled = false;
+    });
+    YMK.addEventListener('closed', function () {
+      setModuleState('pending', 'Hidden');
+    });
+    YMK.addEventListener('engineClosed', function () {
+      setModuleState('pending', 'Idle');
+      txtMode.textContent = '—';
+      placeholder.style.display = 'flex';
+      stageMsg.textContent = 'Session closed. Click "Launch try-on" to start again.';
+      btnClose.disabled = true;
+      btnOpen.disabled = false;
+      skuButtons.forEach(function(b){ b.disabled = true; b.classList.remove('on'); });
+      btnReset.disabled = true;
+      dotSku.className = 'dot';
+      txtSku.textContent = 'No product applied';
+    });
+    YMK.addEventListener('invalidArgs', function () {
+      txtSku.textContent = 'That SKU ID was rejected — replace the placeholder with a real ID from Perfect Console.';
+      dotSku.className = 'dot err';
+    });
+
+    btnOpen.addEventListener('click', function () {
+      YMK.open();
+      btnOpen.disabled = true;
+    });
+    btnClose.addEventListener('click', function () {
+      YMK.close();
+    });
+
+    // Product picker — toggle behaviour: clicking the active SKU resets it,
+    // clicking another applies it (and only ever one active at a time).
+    skuButtons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (!YMK.isLoaded()) return;
+        var already = btn.classList.contains('on');
+        skuButtons.forEach(function(b){ b.classList.remove('on'); });
+        if (already) {
+          YMK.reset();
+          dotSku.className = 'dot';
+          txtSku.textContent = 'No product applied';
+          return;
+        }
+        YMK.applyMakeupBySku(btn.dataset.sku, function () {
+          btn.classList.add('on');
+          dotSku.className = 'dot ok';
+          txtSku.textContent = btn.dataset.name + ' applied';
+        });
+      });
+    });
+    btnReset.addEventListener('click', function () {
+      YMK.reset();
+      skuButtons.forEach(function(b){ b.classList.remove('on'); });
+      dotSku.className = 'dot';
+      txtSku.textContent = 'No product applied';
+    });
+
+    // Auto-launch once the module is ready (button is enabled by now).
+    if (!insecure) btnOpen.click();
+  };
+})();
+</script>
+
+</body>
+</html>
