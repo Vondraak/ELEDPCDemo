@@ -60,7 +60,8 @@ header{position:sticky;top:0;z-index:50;background:rgba(11,5,24,.9);backdrop-fil
 .stage-wrap{display:flex;justify-content:center}
 
 /* ---------- SKU picker ---------- */
-.skus{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.skus{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+@media(max-width:900px){.skus{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.skus{grid-template-columns:repeat(2,1fr)}}
 .sku{appearance:none;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;color:var(--txt);font:inherit;transition:.15s}
 .sku:hover:not(:disabled){border-color:var(--acc2)}
@@ -150,29 +151,59 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
     </div>
   </div>
 
-  <div class="sechd"><h2>Products</h2><span>Sample SKUs — swap the itemGuid/skuId values for real IDs from Perfect Console</span></div>
+  <div class="sechd"><h2>Products</h2><span>Jane Iredale ColorLuxe High Impact Lip Glaze — swap placeholder SKUs for real IDs from Perfect Console</span></div>
 
   <div class="card">
     <div class="skus" id="skuGrid">
-      <button class="sku" data-sku="SKU_LIPSTICK_CLASSIC_RED" data-name="Classic Red" disabled>
-        <span class="swatch" style="background:#c0273a"></span>
-        <span class="name">Classic Red</span>
-        <span class="cat">Lipstick</span>
+      <button class="sku" data-sku="JI_COLORLUXE_CRYSTAL" data-name="Crystal" disabled>
+        <span class="swatch" style="background:#f2ece2"></span>
+        <span class="name">Crystal</span>
+        <span class="cat">Lip Glaze</span>
       </button>
-      <button class="sku" data-sku="SKU_EYESHADOW_ROSE_GOLD" data-name="Rose Gold" disabled>
-        <span class="swatch" style="background:#caa06a"></span>
-        <span class="name">Rose Gold</span>
-        <span class="cat">Eyeshadow</span>
+      <button class="sku" data-sku="JI_COLORLUXE_NECTAR" data-name="Nectar" disabled>
+        <span class="swatch" style="background:#e8a888"></span>
+        <span class="name">Nectar</span>
+        <span class="cat">Lip Glaze</span>
       </button>
-      <button class="sku" data-sku="SKU_BLUSH_CORAL_GLOW" data-name="Coral Glow" disabled>
-        <span class="swatch" style="background:#f0836a"></span>
-        <span class="name">Coral Glow</span>
-        <span class="cat">Blush</span>
+      <button class="sku" data-sku="JI_COLORLUXE_AU_NATUREL" data-name="Au Naturel" disabled>
+        <span class="swatch" style="background:#d9ab95"></span>
+        <span class="name">Au Naturel</span>
+        <span class="cat">Lip Glaze</span>
       </button>
-      <button class="sku" data-sku="SKU_EYELINER_JET_BLACK" data-name="Jet Black" disabled>
-        <span class="swatch" style="background:#141018"></span>
-        <span class="name">Jet Black</span>
-        <span class="cat">Eyeliner</span>
+      <button class="sku" data-sku="JI_COLORLUXE_SIREN" data-name="Siren" disabled>
+        <span class="swatch" style="background:#c8102e"></span>
+        <span class="name">Siren</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="JI_COLORLUXE_JUICY" data-name="Juicy" disabled>
+        <span class="swatch" style="background:#c34068"></span>
+        <span class="name">Juicy</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="JI_COLORLUXE_FLUSH" data-name="Flush" disabled>
+        <span class="swatch" style="background:#d46b7c"></span>
+        <span class="name">Flush</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="JI_COLORLUXE_CHERRY_NOIR" data-name="Cherry Noir" disabled>
+        <span class="swatch" style="background:#5c1f28"></span>
+        <span class="name">Cherry Noir</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="17207" data-name="Amour" disabled>
+        <span class="swatch" style="background:#c98a7c"></span>
+        <span class="name">Amour</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="JI_COLORLUXE_DUSK" data-name="Dusk" disabled>
+        <span class="swatch" style="background:#a86f7a"></span>
+        <span class="name">Dusk</span>
+        <span class="cat">Lip Glaze</span>
+      </button>
+      <button class="sku" data-sku="JI_COLORLUXE_PINK_SUEDE" data-name="Pink Suede" disabled>
+        <span class="swatch" style="background:#b8776c"></span>
+        <span class="name">Pink Suede</span>
+        <span class="cat">Lip Glaze</span>
       </button>
     </div>
     <div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
