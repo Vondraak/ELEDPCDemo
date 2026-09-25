@@ -8,7 +8,7 @@
 :root{
   /* Enlightened LED brand — ink #190933 · indigo #5762D5 · teal #03AA9C · lime #ADE25D */
   --ink:#190933; --indigo:#5762D5; --teal:#03AA9C; --lime:#ADE25D;
-  --bg:#0b0518; --panel:#150c28; --panel2:#1c1234; --line:#2e2050;
+  --bg:#150c28; --panel:#0b0518; --panel2:#07030f; --line:#2e2050;
   --txt:#ece8f6; --dim:#9a90b8; --dim2:#6b5f8c;
   --acc:#12beb0; --acc2:#7f89f0; --warn:#f2b23e; --good:#ADE25D; --bad:#f2706e;
   --r:10px;
@@ -20,23 +20,18 @@ a{color:var(--acc)}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px 60px}
 
 /* ---------- header ---------- */
-header{position:sticky;top:0;z-index:50;background:rgba(11,5,24,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:50;background:rgba(244,242,250,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .hd{max-width:1280px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:11px}
-.brand img.mk{height:34px;width:auto;display:block}
-.brand .tag{display:block;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--dim2);margin-top:5px}
-.brand .title{font-size:15px;font-weight:600;letter-spacing:.2px}
+.brand img.mk{height:52px;width:auto;display:block}
+.brand .tag{display:block;font-size:10.5px;letter-spacing:1.3px;text-transform:uppercase;color:var(--indigo);margin-top:5px}
+.brand .title{font-size:15px;font-weight:600;letter-spacing:.2px;color:var(--ink)}
 .hstats{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
 .hstat{text-align:right}
-.hstat .k{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--dim2)}
-.hstat .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums}
-.hstat .v.acc{color:var(--acc)}
-.hstat .v.good{color:var(--good)}
-
-/* ---------- hero / intro ---------- */
-.hero{padding:34px 0 4px}
-.hero h1{margin:0 0 6px;font-size:22px;font-weight:600;letter-spacing:.2px}
-.hero p{margin:0;color:var(--dim);max-width:640px}
+.hstat .k{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:var(--indigo)}
+.hstat .v{font-size:16px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink)}
+.hstat .v.acc{color:var(--teal)}
+.hstat .v.good{color:#4f8f22}
 
 /* ---------- cards / grid ---------- */
 .grid{display:grid;gap:16px}
@@ -45,10 +40,14 @@ header{position:sticky;top:0;z-index:50;background:rgba(11,5,24,.9);backdrop-fil
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:18px}
 .card h3{margin:0 0 4px;font-size:12px;letter-spacing:1.1px;text-transform:uppercase;color:var(--acc)}
 .card .sub{color:var(--dim2);font-size:12px;margin:0 0 14px}
+
+/* ---------- section headers ---------- */
 .sechd{display:flex;align-items:baseline;gap:12px;margin:30px 0 12px}
 .sechd:first-child{margin-top:0}
 .sechd h2{margin:0;font-size:15px;font-weight:600;letter-spacing:.2px}
 .sechd span{color:var(--dim2);font-size:12px}
+.sechd-main{margin-top:34px;padding:16px 0 24px}
+.sechd-main h2{font-size:28px;letter-spacing:.1px}
 
 /* ---------- VTO stage ---------- */
 /* Let the SDK's iframe size itself naturally; the box just wraps snugly
@@ -58,11 +57,14 @@ header{position:sticky;top:0;z-index:50;background:rgba(11,5,24,.9);backdrop-fil
 #YMK-module iframe{display:block !important;border:0 !important;max-width:100%;border-radius:var(--r)}
 .stage-placeholder{min-width:640px;min-height:480px;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;text-align:center;padding:40px;color:var(--dim)}
 .stage-wrap{display:flex;justify-content:center}
+.card-stage{display:flex;align-items:center;justify-content:center}
+.card-stage .stage-wrap{width:100%}
 
 /* ---------- SKU picker ---------- */
 .skus{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 @media(max-width:900px){.skus{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:700px){.skus{grid-template-columns:repeat(2,1fr)}}
+.g2 .skus{grid-template-columns:repeat(4,1fr)}
 .sku{appearance:none;background:var(--panel2);border:1px solid var(--line);border-radius:var(--r);padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;color:var(--txt);font:inherit;transition:.15s}
 .sku:hover:not(:disabled){border-color:var(--acc2)}
 .sku:disabled{opacity:.45;cursor:not-allowed}
@@ -100,7 +102,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
   <div class="hd">
     <div class="brand">
       <img class="mk" src="https://raw.githubusercontent.com/Vondraak/ELEDCalc/main/Enlightened%20LED_Logo_RGB.png" alt="Enlightened LED">
-      <div>
+      <div style="text-align:left;margin-left:125px">
         <div class="title">Virtual Try-On</div>
         <span class="tag">Powered by Perfect Corp · YouCam for Web</span>
       </div>
@@ -114,15 +116,10 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
 
 <div class="wrap">
 
-  <div class="hero">
-    <h1>Try it on — live</h1>
-    <p>Launch the virtual try-on experience below. Use your camera or upload a photo to preview products in real time.</p>
-  </div>
-
-  <div class="sechd"><h2>Live preview</h2><span>AR virtual try-on module</span></div>
+  <div class="sechd sechd-main"><h2>Live preview</h2><span>AR virtual try-on module</span></div>
 
   <div class="grid g2">
-    <div class="card">
+    <div class="card card-stage">
       <div class="stage-wrap">
       <div class="stage" id="stage">
         <div id="YMK-module"></div>
@@ -137,11 +134,63 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
     </div>
 
     <div class="card">
-      <h3>Controls</h3>
-      <p class="sub">Launch, reset, or close the try-on session</p>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <button class="btn" id="btnOpen" disabled>Launch try-on</button>
-        <button class="btn ghost" id="btnClose" disabled>Close session</button>
+      <h3>Products</h3>
+      <p class="sub">Jane Iredale ColorLuxe — tap a shade to apply</p>
+      <div class="skus" id="skuGrid">
+        <button class="sku" data-sku="17200" data-name="Crystal" disabled>
+          <span class="swatch" style="background:#f2ece2"></span>
+          <span class="name">Crystal</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17202" data-name="Nectar" disabled>
+          <span class="swatch" style="background:#e8a888"></span>
+          <span class="name">Nectar</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17201" data-name="Au Naturel" disabled>
+          <span class="swatch" style="background:#d9ab95"></span>
+          <span class="name">Au Naturel</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17205" data-name="Siren" disabled>
+          <span class="swatch" style="background:#c8102e"></span>
+          <span class="name">Siren</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17204" data-name="Juicy" disabled>
+          <span class="swatch" style="background:#c34068"></span>
+          <span class="name">Juicy</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17203" data-name="Flush" disabled>
+          <span class="swatch" style="background:#d46b7c"></span>
+          <span class="name">Flush</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17206" data-name="Cherry Noir" disabled>
+          <span class="swatch" style="background:#5c1f28"></span>
+          <span class="name">Cherry Noir</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17207" data-name="Amour" disabled>
+          <span class="swatch" style="background:#c98a7c"></span>
+          <span class="name">Amour</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17208" data-name="Dusk" disabled>
+          <span class="swatch" style="background:#a86f7a"></span>
+          <span class="name">Dusk</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+        <button class="sku" data-sku="17209" data-name="Pink Suede" disabled>
+          <span class="swatch" style="background:#b8776c"></span>
+          <span class="name">Pink Suede</span>
+          <span class="cat">Lip Glaze</span>
+        </button>
+      </div>
+      <div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+        <button class="btn ghost" id="btnReset" disabled>Reset all effects</button>
+        <span class="status"><span class="dot" id="dotSku"></span><span id="txtSku">No product applied</span></span>
       </div>
 
       <div class="sechd"><h2 style="font-size:13px">Session</h2></div>
@@ -150,68 +199,6 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
       <div class="ro"><span class="k">Camera / Photo</span><span class="v" id="txtMode">—</span></div>
     </div>
   </div>
-
-  <div class="sechd"><h2>Products</h2><span>Jane Iredale ColorLuxe High Impact Lip Glaze — 10 shades, SKUs from janeiredale.com</span></div>
-
-  <div class="card">
-    <div class="skus" id="skuGrid">
-      <button class="sku" data-sku="17200" data-name="Crystal" disabled>
-        <span class="swatch" style="background:#f2ece2"></span>
-        <span class="name">Crystal</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17202" data-name="Nectar" disabled>
-        <span class="swatch" style="background:#e8a888"></span>
-        <span class="name">Nectar</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17201" data-name="Au Naturel" disabled>
-        <span class="swatch" style="background:#d9ab95"></span>
-        <span class="name">Au Naturel</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17205" data-name="Siren" disabled>
-        <span class="swatch" style="background:#c8102e"></span>
-        <span class="name">Siren</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17204" data-name="Juicy" disabled>
-        <span class="swatch" style="background:#c34068"></span>
-        <span class="name">Juicy</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17203" data-name="Flush" disabled>
-        <span class="swatch" style="background:#d46b7c"></span>
-        <span class="name">Flush</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17206" data-name="Cherry Noir" disabled>
-        <span class="swatch" style="background:#5c1f28"></span>
-        <span class="name">Cherry Noir</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17207" data-name="Amour" disabled>
-        <span class="swatch" style="background:#c98a7c"></span>
-        <span class="name">Amour</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17208" data-name="Dusk" disabled>
-        <span class="swatch" style="background:#a86f7a"></span>
-        <span class="name">Dusk</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-      <button class="sku" data-sku="17209" data-name="Pink Suede" disabled>
-        <span class="swatch" style="background:#b8776c"></span>
-        <span class="name">Pink Suede</span>
-        <span class="cat">Lip Glaze</span>
-      </button>
-    </div>
-    <div style="margin-top:14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
-      <button class="btn ghost" id="btnReset" disabled>Reset all effects</button>
-      <span class="status"><span class="dot" id="dotSku"></span><span id="txtSku">No product applied</span></span>
-    </div>
-  </div>
-
 </div>
 
 <footer>Enlightened LED · Virtual Try-On experience embedded via Perfect Corp YouCam for Web SDK</footer>
@@ -243,8 +230,6 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
   var txtMode    = document.getElementById('txtMode');
   var stageMsg   = document.getElementById('stageMsg');
   var placeholder= document.getElementById('stagePlaceholder');
-  var btnOpen    = document.getElementById('btnOpen');
-  var btnClose   = document.getElementById('btnClose');
   var btnReset   = document.getElementById('btnReset');
   var skuButtons = Array.prototype.slice.call(document.querySelectorAll('.sku'));
   var dotSku     = document.getElementById('dotSku');
@@ -282,11 +267,6 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
 
     YMK.init();
 
-    // The module is ready to open as soon as init() returns — do NOT gate
-    // this on the 'loaded' event, which only fires *after* a session (photo
-    // or live stream) is already on canvas.
-    btnOpen.disabled = false;
-
     YMK.addEventListener('launcherPageEntered', function () {
       setModuleState('ok', 'Launcher');
       placeholder.style.display = 'none';
@@ -294,7 +274,6 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
     YMK.addEventListener('opened', function () {
       setModuleState('ok', 'Active');
       placeholder.style.display = 'none';
-      btnClose.disabled = false;
     });
     YMK.addEventListener('cameraOpened', function () {
       txtMode.textContent = 'Live camera';
@@ -320,9 +299,7 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
       setModuleState('pending', 'Idle');
       txtMode.textContent = '—';
       placeholder.style.display = 'flex';
-      stageMsg.textContent = 'Session closed. Click "Launch try-on" to start again.';
-      btnClose.disabled = true;
-      btnOpen.disabled = false;
+      stageMsg.textContent = 'Session closed.';
       skuButtons.forEach(function(b){ b.disabled = true; b.classList.remove('on'); });
       btnReset.disabled = true;
       dotSku.className = 'dot';
@@ -331,14 +308,6 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
     YMK.addEventListener('invalidArgs', function () {
       txtSku.textContent = 'That SKU ID was rejected — replace the placeholder with a real ID from Perfect Console.';
       dotSku.className = 'dot err';
-    });
-
-    btnOpen.addEventListener('click', function () {
-      YMK.open();
-      btnOpen.disabled = true;
-    });
-    btnClose.addEventListener('click', function () {
-      YMK.close();
     });
 
     // Product picker — toggle behaviour: clicking the active SKU resets it,
@@ -368,8 +337,8 @@ footer{border-top:1px solid var(--line);margin-top:40px;padding:20px;text-align:
       txtSku.textContent = 'No product applied';
     });
 
-    // Auto-launch once the module is ready (button is enabled by now).
-    if (!insecure) btnOpen.click();
+    // Auto-launch the try-on session — there's no manual launch button.
+    if (!insecure) YMK.open();
   };
 })();
 </script>
